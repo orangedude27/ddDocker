@@ -1,0 +1,23 @@
+services:
+  decompdecomp:
+    build: .
+    container_name: decompdecomp
+    working_dir: ${DECOMP_HOME:-/data}
+    environment:
+      DECOMP_HOME: ${DECOMP_HOME:-/data}
+    entrypoint: ["/bin/bash", "/proxy-entrypoint.sh"]
+    ports:
+      - "6464:8080"
+    volumes:
+      # Persistent workspace, projects and .decomp/decomp.db
+      - ./data:/data
+      - ./entrypoint.sh:/proxy-entrypoint.sh:ro
+      - ./proxy_setup.py:/proxy_setup.py:ro
+      # Persistent cache for downloaded toolchains (CodeWarrior compilers, objdiff, etc.)
+      - ./decompnet_tools:/root/.local/share/decompnet/toolchains
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          # Ghidra JVM analysis can be memory-intensive; 4GB+ recommended
+          memory: 8G

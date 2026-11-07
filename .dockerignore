@@ -1,0 +1,12 @@
+# Never send game data, credentials, toolchains or upstream development checkouts to the image builder.
+data/
+decompnet_tools/
+.decomp/
+upstream-decompdecomp/
+.venv/
+audit-reports/
+tests/
+pyrightconfig.json
+.git/
+**/__pycache__/
+**/*.pyc
